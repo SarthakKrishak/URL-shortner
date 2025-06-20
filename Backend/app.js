@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 dotenv.config();
-import urlSchema from "./src/models/shorturl.models.js"
 import express from 'express'
 import connectDB from './src/config/mongo.config.js';
 import shortUrlRoute from "./src/routes/shortUrl.route.js";

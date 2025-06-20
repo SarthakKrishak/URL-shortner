@@ -4,6 +4,7 @@ import express from 'express'
 import connectDB from './src/config/mongo.config.js';
 import shortUrlRoute from "./src/routes/shortUrl.route.js";
 import { redirectShortUrl } from "./src/controller/shortUrl.controller.js";
+import {errorHandler} from "./src/utils/errorHandler.js"
 
 const app = express();
 
@@ -17,6 +18,8 @@ app.get("/", (req, res) => {
 app.use("/api", shortUrlRoute);
 
 app.get("/:id", redirectShortUrl)
+
+app.use(errorHandler)
 
 app.listen(process.env.PORT || 5000, () => {
     connectDB();

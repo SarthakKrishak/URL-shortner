@@ -1,4 +1,5 @@
 import urlSchema from '../models/shorturl.models.js';
+import { ConflictError } from '../utils/errorHandler.js';
 import { generateNanoId } from '../utils/helper.js';
 
 export const shortUrlService = async (url) => {
@@ -11,7 +12,10 @@ export const shortUrlService = async (url) => {
         await newUrl.save();
         return shortUrl;
     } catch (error) {
+        if (error.code == 11000) {
+            throw new ConflictError(error)
+        }
         console.error("Error saving to DB:", err);
-        return res.status(500).send("Server error");
+        throw new Error(error)
     }
 }

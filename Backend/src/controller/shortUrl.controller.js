@@ -1,7 +1,7 @@
 import { shortUrlService } from "../services/shorturl.service.js";
 import urlSchema from "../models/shorturl.models.js"
 
-export const createUrl = async (req, res) => {
+export const createUrl = async (req, res, next) => {
   try {
     const { url } = req.body;
     const shortUrl = await shortUrlService(url);
@@ -9,7 +9,7 @@ export const createUrl = async (req, res) => {
     if (!shortUrl) {
       throw new Error("Short URL not found");
     }
-    res.send(shortUrl).status(200);
+    res.status(200).send(shortUrl);
   } catch (error) {
     next(error)
   }
@@ -21,7 +21,7 @@ export const redirectShortUrl = async (req, res) => {
     console.log("Looking for:", id);
 
     //we are incrementing the clicks directly here.
-    const url = await urlSchema.findOneAndUpdate({ short_url: id },{$inc:{clicks:1}});
+    const url = await urlSchema.findOneAndUpdate({ short_url: id }, { $inc: { clicks: 1 } });
 
     if (url) {
       let redirectUrl = url.full_url;
